@@ -1,0 +1,111 @@
+@num1:765px;//第一个临界值
+@num2:1024px;//第二个临界值
+@n:24;//12栅格化
+*{
+    box-sizing: border-box;
+}
+/*
+ 小屏优先
+ * */
+.box{
+    &-fluid{
+        width: 100%;
+        margin: auto;
+        .clear();
+    }
+    &-fluid>.divbox{
+        width: 100%;
+        .clear();
+    }
+    &{
+        width: 600px;
+        margin: auto;
+        .clear();
+        overflow: hidden;
+    }
+    &>.divbox{
+        width: 100%;
+        .clear();
+    }
+}
+.col-x-hid{
+    display: none;
+}
+.col-d-hid,.col-z-hid{
+    display: block;
+}
+.for(x);
+@media screen and (min-width:@num1){
+    .box{
+        width: @num1;
+    }
+    .for(z);    
+    .col-x-hid{
+        display: block;
+    }
+    .col-z-hid{
+        display: none;
+    }   
+    .col-d-hid{
+        display: none;
+    }
+    
+}
+@media screen and (min-width: @num2){
+    .box{
+        width: @num2;
+    }
+    .col-x-hid{
+        display: block;
+    }
+    .col-z-hid{
+        display: block;
+    }
+    .col-d-hid{
+        display: none;
+    }
+    width: @num2;
+    .for(d);
+}
+.for(@m,@i:1) when(@i<=@n){
+    .box-fluid>.divbox>.col-@{m}-@{i}{        
+        width: @i/@n*100%;
+        float: left;
+    }
+    .box-fluid>.divbox>.col-@{m}-offset-@{i}{
+        margin-left: @i/@n*100%;
+    }
+    .box-fluid>.divbox>.col-@{m}-push-@{i}{
+        position: relative;
+        left: @i/@n*100%;
+    }
+    .box-fluid>.divbox>.col-@{m}-pop-@{i}{
+        position: relative;
+        left:-@i/@n*100%;
+    }
+    .box>.divbox>.col-@{m}-@{i}{
+        width: @i/@n*100%;
+        float: left;
+    }
+    .box>.divbox>.col-@{m}-offset-@{i}{
+         margin-left: @i/@n*100%;
+    }
+    .box>.divbox>.col-@{m}-push-@{i}{
+        position: relative;
+        left: @i/@n*100%;
+    }
+    .box>.divbox>.col-@{m}-pop-@{i}{
+        position: relative;
+        left:-@i/@n*100%;
+    }
+    .for(@m,@i:@i+1);
+}
+.clear(){
+    &{
+        &:after,&:before{
+            content: "";
+            clear: both;
+            display: block;
+        }
+    }
+}
